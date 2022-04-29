@@ -1017,7 +1017,7 @@ class _RenderProgressBar extends RenderBox {
   }
 
   double _proportionOfTotal(Duration duration) {
-    if (total.inMilliseconds == 0) {
+    if (total.inMilliseconds == 0 || total.isNegative) {
       return 0.0;
     }
     return duration.inMilliseconds / total.inMilliseconds;

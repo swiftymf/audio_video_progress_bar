@@ -1024,15 +1024,27 @@ class _RenderProgressBar extends RenderBox {
   }
 
   String _getTimeString(Duration time) {
+    Duration newTime = time;
+    bool timeIsNegative = time.isNegative;
+    if (timeIsNegative) {
+      newTime = time.abs();
+    }
     final minutes =
-        time.inMinutes.remainder(Duration.minutesPerHour).toString();
-    final seconds = time.inSeconds
+        newTime.inMinutes.remainder(Duration.minutesPerHour).toString();
+    final seconds = newTime.inSeconds
         .remainder(Duration.secondsPerMinute)
         .toString()
         .padLeft(2, '0');
-    return time.inHours > 0
-        ? "${time.inHours}:${minutes.padLeft(2, "0")}:$seconds"
-        : "$minutes:$seconds";
+
+    if (timeIsNegative) {
+      return newTime.inHours > 0
+          ? "-${newTime.inHours}:${minutes.padLeft(2, "0")}:$seconds"
+          : "-$minutes:$seconds";
+    } else {
+      return newTime.inHours > 0
+          ? "${time.inHours}:${minutes.padLeft(2, "0")}:$seconds"
+          : "$minutes:$seconds";
+    }
   }
 
   @override
